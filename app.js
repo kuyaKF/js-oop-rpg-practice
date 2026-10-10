@@ -1,47 +1,5 @@
-class Item{
-  constructor(name, category, info){
-    this.name = name;
-    this.category = category;
-    this.info = info;
-  }
-}
-
-class Weapon{
-  constructor(attackpower, magicpower, type, bonus){
-    this.attackpower = attackpower;
-    this.magicpower = magicpower;
-    this.type = type;
-    this.bonus = bonus;
-  }
-}
-
-class Armor{
-  constructor(defense, magicdefense, type, bonus){
-    this.defense = defense;
-    this.magicdefense = magicdefense;
-    this.type = type;
-    this.bonus = bonus;
-  }
-}
-
-class Accessory{
-  constructor(str, vit, agi, int, bonus){
-    this.str = str;
-    this.vit = vit;
-    this.agi = agi;
-    this.int = int;
-    this.bonus = bonus;
-  }
-}
-
-class Job{
-  constructor(name, type, basestats){
-    this.name = name;
-    this.type = type;
-    this.basestats = basestats;
-  }
-}
-
+import { Item, Weapon, Armor, Accessory } from "./models/Item.js";
+import { getJob } from "./services/helper.js";
 
 function addAccstats(objA, objB) {
   objA ??= {};
@@ -164,7 +122,7 @@ class Player{
       Math.round((this.stats.int + this.gear.weapon.info.magicpower) *
       (bonuses.magicpower ?? 1));
 
-    battleStats.defense = this.stats.vit/2.75;
+    battleStats.defense = Math.round(this.stats.vit/2.75);
 
     battleStats.hp = Math.round(((this.stats.vit * 1.65) + (this.level*7)) * (bonuses.hp ?? 1));
 
@@ -187,10 +145,13 @@ const sword1 = new Weapon(20,0,"Sword",null);
 const knife1 = new Weapon(14,0,"Knife",null);
 const staff1 = new Weapon(5,25,"Staff",null);
 
-const hbody1 = new Armor(5,0,"Heavy Armor",null);
-const lbody1 = new Armor(3,0,"Light Armor",{agi: 1.1});
-const robe1 = new Armor(3,7,"Robe",null);
+const hbody1 = new Armor(5,0,"Heavy Armor",null, "body");
+const lbody1 = new Armor(3,0,"Light Armor",{agi: 1.1}, "body");
+const robe1 = new Armor(3,7,"Robe",null, "body");
 
+const hhead1 = new Armor(4,0,"Helm",null, "head"); 
+const lhead1 = new Armor(2,0,"Hat",null, "head");
+const mhead1 = new Armor(0,5,"Hat",{int: 1.1}, "head");
 
 const ring = new Accessory(3,0,0,0,{attackpower: 1.1,})
 const pendant = new Accessory(0,3,0,0,{hp: 1.1,})
@@ -203,38 +164,19 @@ const ironarmor = new Item("Iron Armor","Equipment", hbody1);
 const leathersuit = new Item("Leather suit","Equipment", lbody1);
 const magerobe = new Item("Mage's Robe","Equipment", robe1);
 
+const circlet = new Item("Circlet","Equipment", mhead1);
+
 const mcgear = new Gear(falchion,null,null,null,ring,pendant);
 const axelgear = new Gear(dagger,null,leathersuit,null,ring,null);
-const gabbgear = new Gear(staff,null,null,null,null,null);
+const gabbgear = new Gear(staff,circlet,null,null,null,null);
 
-const warrior = new Job("Warrior", "Physical", {
-  str: 10,
-  vit: 15,
-  agi: 10,
-  int: 5
-});
-
-const thief = new Job("Thief", "Physical", {
-  str: 12,
-  vit: 10,
-  agi: 20,
-  int: 8
-});
-
-const mage = new Job("Mage", "Magic", {
-  str: 2,
-  vit: 8,
-  agi: 8,
-  int: 30
-});
-
-const mc = new Player("Gabby",6,warrior,mcgear);
-const axel = new Player("Axel",4,thief,axelgear);
-const gabb = new Player("Gabby",5,mage,gabbgear);
+const mc = new Player("Kirigab", 6, getJob('Warrior'), mcgear);
+// const axel = new Player("Axel",4,thief,axelgear);
+// const gabb = new Player("Gabby",5,mage,gabbgear);
 
 // console.log(mc);
 // console.log(axel);
 
-// console.dir(mc, { depth: null });
-console.dir(axel, { depth: null });
+console.dir(mc, { depth: null });
+// console.dir(axel, { depth: null });
 // console.dir(gabb, { depth: null });
