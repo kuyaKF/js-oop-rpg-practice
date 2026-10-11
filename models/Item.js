@@ -6,12 +6,13 @@ export class Item{
   }
 }
 
-export class Weapon{
-  constructor(attackpower, magicpower, type, bonus){
+export class Weapon {
+  constructor(attackpower, magicpower, type, bonus, part = "weapon") {
     this.attackpower = attackpower;
     this.magicpower = magicpower;
     this.type = type;
     this.bonus = bonus;
+    this.part = part;
   }
 }
 

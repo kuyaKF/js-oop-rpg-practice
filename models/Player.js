@@ -1,13 +1,40 @@
 import { addAccstats } from "../services/helper.js";
 
 export class Player{
-  constructor(name, level, job, gear){
+  constructor(name, level, job){
     this.name = name;
     this.level = level;
     this.job = job;
-    this.gear = gear;
+    this.gear = new Gear(null,null,null,null,null,null);
     this.stats = this.calcStats();
     this.batstats = this.battStats();
+  }
+
+  equipItem(...itemInfo) {
+    let item;
+    let slot;
+
+    if (itemInfo.length === 1) {
+      [item] = itemInfo;
+      slot = item.info?.part;
+    } else if (itemInfo.length === 2) {
+      [item, slot] = itemInfo;
+    } else {
+      console.log("Invalid number of arguments.");
+      return false;
+    }
+
+    if (!item || !slot || !(slot in this.gear)) {
+      console.log("Invalid equipment slot or item.");
+      return false;
+    }
+
+    this.gear[slot] = item;
+
+    this.stats = this.calcStats();
+    this.batstats = this.battStats();
+
+    return true;
   }
 
   calcBonuses() {
@@ -45,39 +72,54 @@ export class Player{
       );
     }
 
-    const stat1 = addAccstats(calculatedStats, this.gear.acc1);
-    const stat2 = addAccstats(stat1, this.gear.acc2);
+    const firstAcc = addAccstats(
+      calculatedStats,
+      this.gear.acc1?.info
+    );
+
+    const totalAcc = addAccstats(
+      firstAcc,
+      this.gear.acc2?.info
+    );
 
     const bonuses = this.calcBonuses();
 
-    for (const stat of Object.keys(stat2)) {
-      stat2[stat] = Math.round(
-        stat2[stat] * (bonuses[stat] ?? 1)
+    for (const stat of Object.keys(totalAcc)) {
+      totalAcc[stat] = Math.round(
+        totalAcc[stat] * (bonuses[stat] ?? 1)
       );
     }
 
-    return stat2;
+    return totalAcc;
   }
 
+  
   battStats() {
     const battleStats = {};
-
     const bonuses = this.calcBonuses();
 
-    battleStats.attackpower =
-      Math.round((this.stats.str + this.gear.weapon.info.attackpower) *
-      (bonuses.attackpower ?? 1));
+    const weaponInfo = this.gear.weapon?.info;
 
-    battleStats.magicpower =
-      Math.round((this.stats.int + this.gear.weapon.info.magicpower) *
-      (bonuses.magicpower ?? 1));
+    battleStats.attackpower = Math.round(
+      (this.stats.str + (weaponInfo?.attackpower ?? 0)) *
+      (bonuses.attackpower ?? 1)
+    );
 
-    battleStats.defense = Math.round(this.stats.vit/2.75);
+    battleStats.magicpower = Math.round(
+      (this.stats.int + (weaponInfo?.magicpower ?? 0)) *
+      (bonuses.magicpower ?? 1)
+    );
 
-    battleStats.hp = Math.round(((this.stats.vit * 1.65) + (this.level*7)) * (bonuses.hp ?? 1));
+    battleStats.defense = Math.round(this.stats.vit / 2.75);
+
+    battleStats.hp = Math.round(
+      (this.stats.vit * 1.65 + this.level * 7) *
+      (bonuses.hp ?? 1)
+    );
 
     return battleStats;
   }
+
 }
 
 export class Gear{
