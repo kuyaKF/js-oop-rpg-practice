@@ -14,14 +14,16 @@ const mc = new Player("Kirigab", 6, job.warrior);
 // console.log(axel);
 
 mc.equipItem(item.falchion);
-
+mc.equipItem(item.hat);
 mc.equipItem(item.ironarmor);
+mc.equipItem(item.ironboots);
 mc.equipItem(item.ring, "acc1");
 mc.equipItem(item.pendant, "acc2");
 
 // console.dir(mc, { depth: null });
 
 console.log(mc);
+
 
 // console.dir(axel, { depth: null });
 // console.dir(gabb, { depth: null });

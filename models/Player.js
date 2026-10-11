@@ -42,7 +42,7 @@ export class Player{
 
     const equipment = [
       this.gear.weapon,
-      this.gear.headgear,
+      this.gear.head,
       this.gear.body,
       this.gear.shoes,
       this.gear.acc1,
@@ -100,6 +100,10 @@ export class Player{
 
     const weaponInfo = this.gear.weapon?.info;
 
+    const headInfo = this.gear.head?.info;
+    const bodyInfo = this.gear.body?.info;
+    const shoesInfo = this.gear.shoes?.info;
+
     battleStats.attackpower = Math.round(
       (this.stats.str + (weaponInfo?.attackpower ?? 0)) *
       (bonuses.attackpower ?? 1)
@@ -110,7 +114,24 @@ export class Player{
       (bonuses.magicpower ?? 1)
     );
 
-    battleStats.defense = Math.round(this.stats.vit / 2.75);
+    const armorDefense =
+      (headInfo?.defense ?? 0) +
+      (bodyInfo?.defense ?? 0) +
+      (shoesInfo?.defense ?? 0);
+
+    battleStats.defense = Math.round(
+      this.stats.vit / 2.75 + armorDefense
+    );
+
+    const armorMDefense =
+      (headInfo?.magicdefense ?? 0) +
+      (bodyInfo?.magicdefense ?? 0) +
+      (shoesInfo?.magicdefense ?? 0);
+
+    battleStats.magicdefense = Math.round(
+      (this.stats.vit / 4) + (this.stats.int / 1.75) + armorMDefense
+    );
+
 
     battleStats.hp = Math.round(
       (this.stats.vit * 1.65 + this.level * 7) *
@@ -123,9 +144,9 @@ export class Player{
 }
 
 export class Gear{
-  constructor(weapon, headgear, body, shoes, acc1, acc2){
+  constructor(weapon, head, body, shoes, acc1, acc2){
     this.weapon = weapon;
-    this.headgear = headgear;
+    this.head = head;
     this.body = body;
     this.shoes = shoes;
     this.acc1 = acc1;
