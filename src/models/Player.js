@@ -10,9 +10,16 @@ export class Player{
     this.batstats = this.battStats();
   }
 
+  levelUp(){
+    this.level += 1;
+    this.stats = this.calcStats();
+    this.batstats = this.battStats();
+  }
+
   equipItem(...itemInfo) {
     let item;
     let slot;
+    let equippedItem;
 
     if (itemInfo.length === 1) {
       [item] = itemInfo;
@@ -29,12 +36,14 @@ export class Player{
       return false;
     }
 
+    equippedItem = this.gear[slot];
+
     this.gear[slot] = item;
 
     this.stats = this.calcStats();
     this.batstats = this.battStats();
 
-    return true;
+    return equippedItem;
   }
 
   calcBonuses() {

@@ -1,35 +1,54 @@
 import { useState } from 'react'
+import Button from "./components/Button";
 import { Player, Gear, Inventory } from "./models/Player"
 import { job } from "./data/jobs"
 import { item } from "./data/items"
 
-const mc = new Player("Felix", 6, job.warrior);
-const bag = new Inventory();
-
-bag.addItem(item.hat);
-bag.addItem(item.leathersuit);
-bag.addItem(item.leatherboots);
-
-mc.equipItem(item.falchion);
-mc.equipItem(item.ironhelm);
-mc.equipItem(item.ironarmor);
-mc.equipItem(item.ironboots);
-mc.equipItem(item.ring, "acc1");
-mc.equipItem(item.pendant, "acc2");
-
 function App() {
+
+  const [user] = useState(() => {
+    const player = new Player("Felix", 6, job.warrior);
+
+    player.equipItem(item.falchion);
+    player.equipItem(item.ironhelm);
+    player.equipItem(item.ironarmor);
+    player.equipItem(item.ironboots);
+    player.equipItem(item.ring, "acc1");
+    player.equipItem(item.pendant, "acc2");
+
+
+    return player;
+  });
+
+  const [bag] = useState(() => {
+    const inventory = new Inventory();
+
+    inventory.addItem(item.hat);
+    inventory.addItem(item.leathersuit);
+    inventory.addItem(item.leatherboots);
+
+    return inventory;
+  });
+
+  const [inventoryItems, setInventoryItems] = useState(() => [...bag.items]);
+
+  function clickToEquip(itemToEquip) {
+    const itemTobag = user.equipItem(itemToEquip);
+    bag.removeItem(itemToEquip);
+    bag.addItem(itemTobag);
+    setInventoryItems([...bag.items]);
+  }
 
   return (
     <>
-      
       <main className="min-h-screen bg-slate-950 p-6">
         <div className="rounded-xl border border-slate-700 bg-slate-900 mb-5 p-5 shadow-lg shadow-blue-950/20">
           <section>
             <h2 className="text-lg font-semibold text-blue-100">
-              Character Sheet: {mc.name}
+              Character Sheet: {user.name}
             </h2>
             <p className="mt-1 text-sm text-slate-400">
-              Class: {mc.job.name}
+              Class: {user.job.name}
             </p>
           </section>
 
@@ -41,7 +60,7 @@ function App() {
                 Character Stats
               </h3>
 
-              {Object.entries(mc.stats).map(([param, value]) => (
+              {Object.entries(user.stats).map(([param, value]) => (
                 <div
                   key={param}
                   className="mb-1 flex justify-between rounded-lg border border-slate-800 bg-slate-800/70 p-3"
@@ -61,7 +80,7 @@ function App() {
                 Battle Stats
               </h3>
 
-              {Object.entries(mc.batstats).map(([param, value]) => (
+              {Object.entries(user.batstats).map(([param, value]) => (
                 <div
                   key={param}
                   className="mb-1 flex justify-between rounded-lg border border-slate-800 bg-slate-800/70 p-3"
@@ -85,7 +104,7 @@ function App() {
               Character Equipment
             </h3>
 
-            {Object.entries(mc.gear).map(([param, value]) => (
+            {Object.entries(user.gear).map(([param, value]) => (
               <div
                 key={param}
                 className="mb-1 flex justify-between rounded-lg border border-slate-800 bg-slate-800/70 p-3"
@@ -113,11 +132,14 @@ function App() {
                 key={param}
                 className="mb-1 flex justify-between rounded-lg border border-slate-800 bg-slate-800/70 p-3"
               >
-                <span className="font-medium capitalize text-slate-300">
+                {/* <span className="font-medium capitalize text-slate-300">
                   {param}
-                </span>
+                </span> */}
+                <Button onClick={() => clickToEquip(value)}>
+                  Equip
+                </Button>
                 <span className="font-semibold text-blue-100">
-                  {value === null ? "Nothing" : value.name}
+                  {value.name}
                 </span>
               </div>
             ))}
