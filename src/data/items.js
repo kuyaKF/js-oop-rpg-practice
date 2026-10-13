@@ -1,4 +1,3 @@
-
 import { Item, Weapon, Armor, Accessory } from "../models/Item.js";
 
 export const item = {

@@ -1,10 +1,14 @@
 import { useState } from 'react'
-import { Player, Gear } from "./models/Player"
+import { Player, Gear, Inventory } from "./models/Player"
 import { job } from "./data/jobs"
 import { item } from "./data/items"
 
-
 const mc = new Player("Felix", 6, job.warrior);
+const bag = new Inventory();
+
+bag.addItem(item.hat);
+bag.addItem(item.leathersuit);
+bag.addItem(item.leatherboots);
 
 mc.equipItem(item.falchion);
 mc.equipItem(item.ironhelm);
@@ -19,7 +23,7 @@ function App() {
     <>
       
       <main className="min-h-screen bg-slate-950 p-6">
-        <div className="rounded-xl border border-slate-700 bg-slate-900 p-5 shadow-lg shadow-blue-950/20">
+        <div className="rounded-xl border border-slate-700 bg-slate-900 mb-5 p-5 shadow-lg shadow-blue-950/20">
           <section>
             <h2 className="text-lg font-semibold text-blue-100">
               Character Sheet: {mc.name}
@@ -30,7 +34,6 @@ function App() {
           </section>
 
           <hr className="my-4 border-slate-700" />
-
           
           <div className="grid grid-cols-2 gap-4">
             <section>
@@ -78,7 +81,7 @@ function App() {
           <hr className="my-4 border-slate-700" />
 
           <section>
-            <h3 className="text-md font-semibold text-blue-200">
+            <h3 className="text-md font-semibold mb-3 text-blue-200">
               Character Equipment
             </h3>
 
@@ -95,6 +98,30 @@ function App() {
                 </span>
               </div>
             ))}
+          </section>
+        </div>
+        <div className="rounded-xl border border-slate-700 bg-slate-900 p-5 shadow-lg shadow-blue-950/20">
+          <section>
+            <h2 className="text-lg font-semibold text-blue-100">
+              Inventory
+            </h2>
+            
+            <hr className="my-4 border-slate-700" />
+            
+            {Object.entries(bag.items).map(([param, value]) => (
+              <div
+                key={param}
+                className="mb-1 flex justify-between rounded-lg border border-slate-800 bg-slate-800/70 p-3"
+              >
+                <span className="font-medium capitalize text-slate-300">
+                  {param}
+                </span>
+                <span className="font-semibold text-blue-100">
+                  {value === null ? "Nothing" : value.name}
+                </span>
+              </div>
+            ))}
+            
           </section>
         </div>
       </main>

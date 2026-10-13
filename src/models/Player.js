@@ -153,3 +153,26 @@ export class Gear{
     this.acc2 = acc2;
   }
 }
+
+export class Inventory {
+  constructor() {
+    this.items = [];
+  }
+
+  addItem(...item) {
+    this.items.push(...item);
+    return this.items;
+  }
+
+  removeItem(itemToRemove) {
+    const index = this.items.findIndex(
+      item => item === itemToRemove
+    );
+
+    if (index !== -1) {
+      this.items.splice(index, 1);
+    }
+
+    return this.items;
+  }
+}
