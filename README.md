@@ -1,16 +1,54 @@
-# React + Vite
+# JavaScript OOP RPG Practice
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A browser-based RPG character system built with JavaScript, object-oriented programming (OOP), React, and Tailwind CSS. This project began as a JavaScript OOP practice exercise and is gradually evolving into a more interactive RPG application.
 
-Currently, two official plugins are available:
+The project focuses on applying OOP principles to character creation, stats calculation, equipment management, and battle stats while learning how to build a frontend with React.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+- **Character System** — Represent RPG characters using JavaScript classes and object-oriented principles.
+- **Character Stats** — Calculate and display attributes such as Strength, Vitality, Agility, and Intelligence.
+- **Battle Stats** — Calculate combat-related attributes such as physical attack power, magic power, and defense.
+- **Equipment System** — Organize weapons, armor, and accessories into an item catalogue.
+- **Equipment Management** — Assign equipment to character gear slots and account for equipment bonuses.
+- **React UI** — Display character information, stats, and equipped items through reusable React components.
+- **Dark Theme** — Style the interface with a dark, blue-leaning color palette using Tailwind CSS.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
 
-## Expanding the ESLint configuration
+- **JavaScript** — Core game logic and OOP implementation.
+- **React** — Component-based user interface.
+- **Vite** — Frontend development server and build tooling.
+- **Tailwind CSS** — Utility-first styling.
+- **Node.js** — JavaScript runtime used during development.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Learning Objectives
+
+This project serves as a practical exercise in:
+
+- Applying JavaScript classes, inheritance, and encapsulation.
+- Organizing code into reusable modules.
+- Managing nested objects and structured game data.
+- Calculating character attributes and equipment bonuses.
+- Rendering dynamic data in React using JSX and array methods.
+- Understanding React state and component-based UI development.
+- Building a responsive interface with Tailwind CSS.
+
+## Project Status
+
+**In Development**
+
+The project is being developed incrementally, starting with the underlying RPG classes and equipment system before expanding the React interface and interactive gameplay features.
+
+## Future Improvements
+
+- Character creation and job selection.
+- Interactive equipment selection and inventory management.
+- Automatic stat recalculation when equipment changes.
+- Battle mechanics and damage calculations.
+- Reusable UI components for character stats, equipment, and inventory.
+- Persistent character data.
+
+## License
+
+This project is intended for learning and personal development. A formal license can be added if the project is released for public use.
