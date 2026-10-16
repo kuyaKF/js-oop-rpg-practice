@@ -1,8 +1,9 @@
 export class Item{
-  constructor(name, category, info){
+  constructor(name, category, info, tier){
     this.name = name;
     this.category = category;
     this.info = info;
+    this.tier = tier;
   }
 }
 

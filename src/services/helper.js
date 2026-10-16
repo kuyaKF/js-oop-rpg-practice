@@ -1,3 +1,5 @@
+import { Enemy } from "../models/Enemy.js";
+
 export function addAccstats(objA, objB) {
   objA ??= {};
   objB ??= {};
@@ -42,4 +44,10 @@ export function addAccstats(objA, objB) {
   });
 
   return result;
+}
+
+export function spawnEnemy(enemy, level) {
+  const newEnemy = new Enemy(enemy.name, enemy.baseStats);
+  newEnemy.setLevel(level);
+  return newEnemy;
 }

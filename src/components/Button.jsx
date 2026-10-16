@@ -1,7 +1,13 @@
-
-export default function Button({ children, onClick, variant = "primary" }) {
+export default function Button({
+  children,
+  onClick,
+  variant = "primary",
+  size = "md",
+  type = "button",
+  disabled = false,
+}) {
   const baseStyles =
-    "rounded-lg px-4 py-2 font-semibold transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2";
+    "rounded-lg cursor-pointer font-semibold transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50";
 
   const variants = {
     primary:
@@ -12,11 +18,18 @@ export default function Button({ children, onClick, variant = "primary" }) {
       "bg-red-600 text-white hover:bg-red-700 focus:ring-red-500",
   };
 
+  const sizes = {
+    sm: "px-2 py-1 text-sm",
+    md: "px-4 py-2 text-base",
+    lg: "px-6 py-3 text-lg",
+  };
+
   return (
     <button
-      type="button"
+      type={type}
       onClick={onClick}
-      className={`${baseStyles} ${variants[variant]}`}
+      disabled={disabled}
+      className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
     >
       {children}
     </button>

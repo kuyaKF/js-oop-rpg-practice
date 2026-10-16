@@ -4,7 +4,16 @@ import { Player, Gear, Inventory } from "./models/Player"
 import { job } from "./data/jobs"
 import { item } from "./data/items"
 
+import { mobs } from "./data/mobs"
+import { spawnEnemy } from "./services/helper"
+
 function App() {
+
+  const [enemies] = useState(() => ({
+    goblin1: spawnEnemy(mobs.goblin, 3),
+    goblin2: spawnEnemy(mobs.goblin, 4),
+    goblin3: spawnEnemy(mobs.goblinwar, 5),
+  }));
 
   const [user] = useState(() => {
     const player = new Player("Felix", 6, job.warrior);
@@ -15,7 +24,6 @@ function App() {
     player.equipItem(item.ironboots);
     player.equipItem(item.ring, "acc1");
     player.equipItem(item.pendant, "acc2");
-
 
     return player;
   });
@@ -119,7 +127,7 @@ function App() {
             ))}
           </section>
         </div>
-        <div className="rounded-xl border border-slate-700 bg-slate-900 p-5 shadow-lg shadow-blue-950/20">
+        <div className="rounded-xl border border-slate-700 bg-slate-900 mb-5 p-5 shadow-lg shadow-blue-950/20">
           <section>
             <h2 className="text-lg font-semibold text-blue-100">
               Inventory
@@ -135,7 +143,7 @@ function App() {
                 {/* <span className="font-medium capitalize text-slate-300">
                   {param}
                 </span> */}
-                <Button onClick={() => clickToEquip(value)}>
+                <Button onClick={() => clickToEquip(value)} size="sm">
                   Equip
                 </Button>
                 <span className="font-semibold text-blue-100">
@@ -143,6 +151,50 @@ function App() {
                 </span>
               </div>
             ))}
+            
+          </section>
+        </div>
+        <div className="rounded-xl border border-slate-700 bg-slate-900 p-5 shadow-lg shadow-blue-950/20">
+          <section>
+            <h2 className="text-lg font-semibold text-blue-100">
+              Enemies
+            </h2>
+            
+            <hr className="my-4 border-slate-700" />
+            
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              {Object.entries(enemies).map(([key, enemy]) => (
+                <div
+                  key={key}
+                  className="rounded-lg border border-slate-800 bg-slate-800/70 p-4"
+                >
+                  <h3 className="mb-1 text-lg font-semibold text-red-300">
+                    {enemy.name}
+                  </h3>
+
+                  <p className="mb-3 text-sm text-slate-400">
+                    Level: {enemy.level}
+                  </p>
+
+                  <div className="space-y-2">
+                    {Object.entries(enemy.stats).map(([stat, value]) => (
+                      <div
+                        key={stat}
+                        className="flex justify-between rounded-md bg-slate-900 px-3 py-2"
+                      >
+                        <span className="font-medium uppercase text-slate-300">
+                          {stat}
+                        </span>
+
+                        <span className="font-semibold text-red-200">
+                          {value}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
             
           </section>
         </div>
