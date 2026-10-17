@@ -13,6 +13,12 @@ export const mobs = {
     agi: 8,
     int: 1,
   }),
+  goblinmag: new Enemy("Goblin Mage", {
+    str: 2,
+    vit: 2,
+    agi: 8,
+    int: 5,
+  }),
 };
 
 // const enemy1 = mobs.goblin;

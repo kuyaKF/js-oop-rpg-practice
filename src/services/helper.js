@@ -1,4 +1,5 @@
 import { Enemy } from "../models/Enemy.js";
+import { mobs } from "../data/mobs";
 
 export function addAccstats(objA, objB) {
   objA ??= {};
@@ -46,8 +47,50 @@ export function addAccstats(objA, objB) {
   return result;
 }
 
-export function spawnEnemy(enemy, level) {
+export function spawnEnemy(enemy, playerlevel, dungeonlevel) {
+  // Determine the enemy level range
+  const minLevel = Math.max(1, playerlevel + dungeonlevel - 4);
+  const maxLevel = Math.max(minLevel, playerlevel + dungeonlevel + 0);
+
+  // Generate a random level within the range (inclusive)
+  const randomLevel =
+    Math.floor(Math.random() * (maxLevel - minLevel + 1)) + minLevel;
+
+  // Create and level the enemy
   const newEnemy = new Enemy(enemy.name, enemy.baseStats);
-  newEnemy.setLevel(level);
+  newEnemy.setLevel(randomLevel);
+
   return newEnemy;
+}
+
+function randomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+export function generateEncounter(playerlevel, dungeonlevel) {
+  // Randomly choose between 1 and 4 enemies
+  const enemyCount = randomInt(1, 4);
+
+  // Get all available mob types from your catalogue
+  const mobPool = Object.values(mobs);
+
+  // Generate the encounter
+  const encounter = Array.from(
+    { length: enemyCount },
+    () => {
+      // Randomly select a mob type
+      const randomMob = mobPool[
+        randomInt(0, mobPool.length - 1)
+      ];
+
+      // Spawn the mob with randomized level scaling
+      return spawnEnemy(
+        randomMob,
+        playerlevel,
+        dungeonlevel
+      );
+    }
+  );
+
+  return encounter;
 }
