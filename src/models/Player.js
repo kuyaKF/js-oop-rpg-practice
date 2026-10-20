@@ -1,4 +1,5 @@
 import { addAccstats } from "../services/helper.js";
+import { skills } from "../data/skills.js";
 
 export class Player{
   constructor(name, level, job){
@@ -8,12 +9,26 @@ export class Player{
     this.gear = new Gear(null,null,null,null,null,null);
     this.stats = this.calcStats();
     this.batstats = this.battStats();
+    this.skills = this.setSkills();
+  }
+
+  setSkills() {
+    const jobSkills = skills[this.job.id];
+
+    if (!jobSkills) return null;
+
+    return Object.fromEntries(
+      Object.entries(jobSkills).filter(
+        ([id, skill]) => this.level >= skill.requiredLevel
+      )
+    );
   }
 
   levelUp(){
     this.level += 1;
     this.stats = this.calcStats();
     this.batstats = this.battStats();
+    this.skills = this.setSkills();
   }
 
   equipItem(...itemInfo) {
@@ -138,13 +153,20 @@ export class Player{
       (shoesInfo?.magicdefense ?? 0);
 
     battleStats.magicdefense = Math.round(
-      (this.stats.vit / 4) + (this.stats.int / 1.75) + armorMDefense
+      this.stats.vit / 4 +
+      this.stats.int / 1.75 +
+      armorMDefense
     );
-
 
     battleStats.hp = Math.round(
       (this.stats.vit * 1.65 + this.level * 7) *
       (bonuses.hp ?? 1)
+    );
+
+    // MP calculations
+    battleStats.Mp = Math.round(
+      (this.stats.int * 2 + this.level * 5) *
+      (bonuses.mp ?? 1)
     );
 
     return battleStats;
